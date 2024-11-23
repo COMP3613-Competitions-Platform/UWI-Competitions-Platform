@@ -20,6 +20,7 @@ class Student(User):
         self.teams = []
         self.notifications = []
 
+
     def add_notification(self, notification):
         if notification:
           try:

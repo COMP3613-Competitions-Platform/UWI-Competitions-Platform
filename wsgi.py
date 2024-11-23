@@ -48,19 +48,20 @@ def initialize():
         reader = csv.DictReader(competition_file)
 
         for competition in reader:
-            comp = create_competition(competition['mod_name'], competition['comp_name'], competition['date'], competition['location'], competition['level'], competition['max_score'])
+            comp = create_competition(competition['mod_name'], competition['comp_name'], competition['date'], competition['location'], competition['level'], competition['max_score'], competition['type'])
     
     competition_file.close()
     
     with open("results.csv") as results_file:
         reader = csv.DictReader(results_file)
 
-        for result in reader:
-            students = [result['student1'], result['student2'], result['student3']]
-            team = add_team(result['mod_name'], result['comp_name'], result['team_name'], students)
-            add_results(result['mod_name'], result['comp_name'], result['team_name'], int(result['score']))
-            #db.session.add(comp)
-        #db.session.commit()
+        if comp.type == "team":
+            for result in reader:
+                students = [result['student1'], result['student2'], result['student3']]
+                team = add_team(result['mod_name'], result['comp_name'], result['team_name'], students)
+                add_results(result['mod_name'], result['comp_name'], result['team_name'], int(result['score']))
+                #db.session.add(comp)
+            #db.session.commit()
     
     results_file.close()
 

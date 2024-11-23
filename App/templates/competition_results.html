@@ -9,34 +9,54 @@
 
 <main class="container" style="padding: 15px; background-color: black; border-radius: 25px;">
     <form name="addForm" class="card" method="POST" action="{{ url_for('comp_views.add_competition_results', comp_name=competition.name) }}" style="background-color: black; font-family: helvetica;">
-        <div class="card-content">
-            <span style="color: white; font-family: optima;" class="card-title">Enter competition results</span>
-            <div class="input-field">
-                <input style="color: white;" type="text" name="team_name" placeholder="Enter Team Name" class="validate" required>
-                <label for="team_name">Team Name</label>
+        {% if competition.type == "team" %}
+            <div class="card-content">
+                <span style="color: white; font-family: optima;" class="card-title">Enter Team Competition Results</span>
+                <div class="input-field">
+                    <input style="color: white;" type="text" name="team_name" placeholder="Enter Team Name" class="validate" required>
+                    <label for="team_name">Team Name</label>
+                </div>
+                <div class="input-field">
+                    <input style="color: white;" type="text" name="student1" placeholder="Enter Student Name" class="validate" required>
+                    <label for="student1">Student 1</label>
+                </div>
+                <div class="input-field">
+                    <input style="color: white;" type="text" name="student2" placeholder="Enter Student Name" class="validate" required>
+                    <label for="student2">Student 2</label>
+                </div>
+                <div class="input-field">
+                    <input style="color: white;" type="text" name="student3" placeholder="Enter Student Name" class="validate" required>
+                    <label for="student3">Student 3</label>
+                </div>
+                <div class="input-field">
+                    <input style="color: white;" type="number" name="score" placeholder="Enter Score" class="validate" required>
+                    <label for="score">Score</label>
+                </div>
             </div>
-            <div class="input-field">
-                <input style="color: white;" type="text" name="student1" placeholder="Enter Student Name" class="validate" required>
-                <label for="team_name">Student 1</label>
+            <div class="card-action">
+                <div class="col s12">
+                    <input style="background-color: #343A40; border-radius: 25px;" type="submit" class="btn right" value="Upload Results">
+                </div>
             </div>
-            <div class="input-field">
-                <input style="color: white;" type="text" name="student2" placeholder="Enter Student Name" class="validate" required>
-                <label for="team_name">Student 2</label>
+        {% elif competition.type == "single" %}
+            <div class="card-content">
+                <span style="color: white; font-family: optima;" class="card-title">Enter Individual Competition Results</span>
+                <div class="input-field">
+                    <input style="color: white;" type="text" name="student_name" placeholder="Enter Student Name" class="validate" required>
+                    <label for="student_name">Student Name</label>
+                </div>
+                <div class="input-field">
+                    <input style="color: white;" type="number" name="score" placeholder="Enter Score" class="validate" required>
+                    <label for="score">Score</label>
+                </div>
             </div>
-            <div class="input-field">
-                <input style="color: white;" type="text" name="student3" placeholder="Enter Student Name" class="validate" required>
-                <label for="team_name">Student 3</label>
+            <div class="card-action">
+                <div class="col s12">
+                    <input style="background-color: #343A40; border-radius: 25px;" type="submit" class="btn right" value="Upload Results">
+                </div>
             </div>
-            <div class="input-field">
-                <input style="color: white;" type="number" name="score" placeholder="Enter Score" class="validate" required>
-                <label for="score">Score</label>
-            </div>
-        </div>
-        <div class="card-action">
-            <div class="col s12">
-                <input style="background-color: #343A40; border-radius: 25px;" type="submit" class="btn right" value="Upload Results">
-            </div>
-        </div>
+        {% endif %}
     </form>
+    
 </main>
 {% endblock %}

@@ -62,30 +62,40 @@
     {% else %}
         <center> <h4 style="color: white; background-color: black; border-radius: 15px;">{{ competition.name }} Official Results</h4> </center>
     {% endif %}
+
     <table class="table" style="color: white; font-family: verdana;">
         <thead>
             <tr>
                 <th><center>Rank</center></th>
-                <th><center>Team</center></th>
-                <th><center>Members</center></th>
+                {% if competition.type == "team" %}
+                    <th><center>Team</center></th>
+                    <th><center>Members</center></th>
+                {% else %}
+                    <th><center>Student</center></th>
+                {% endif %}
                 <th><center>Score</center></th>
             </tr>
         </thead>
         <tbody>
             {% for row in leaderboard %}
-            <tr>
-                <td><center>{{row['placement']}}</center></td>
-                <td><center>{{row['team']}}</center></td>
-                <td>
-                {% for student in row['members'] %}
-                    <center><a style= "color: white;" href="{{url_for('index_views.student_profile_by_name', name=student)}}">{{student}}</p></center>
-                {% endfor %}
-                </td>
-                <td><center>{{row['score']}}</center></td>
-            </tr>
+                <tr>
+                    <td><center>{{ row['placement'] }}</center></td>
+                    {% if competition.type == "team" %}
+                        <td><center>{{ row['team'] }}</center></td>
+                        <td>
+                            {% for student in row['members'] %}
+                                <center><a style="color: white;" href="{{ url_for('index_views.student_profile_by_name', name=student) }}">{{ student }}</a></center>
+                            {% endfor %}
+                        </td>
+                    {% else %}
+                        <td><center><a style="color: white;" href="{{ url_for('index_views.student_profile_by_name', name=row['student']) }}">{{ row['student'] }}</a></center></td>
+                    {% endif %}
+                    <td><center>{{ row['score'] }}</center></td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
 <div style="padding: 20px;"></div>
 {% endblock %}

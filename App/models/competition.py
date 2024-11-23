@@ -2,6 +2,7 @@ from App.database import db
 from datetime import datetime
 from .competition_moderator import *
 from .competition_team import *
+from .competition_student import*
 
 class Competition(db.Model):
     __tablename__='competition'
@@ -12,18 +13,22 @@ class Competition(db.Model):
     location = db.Column(db.String(120), nullable=False)
     level = db.Column(db.Float, default=1)
     max_score = db.Column(db.Integer, default=25)
+    type = db.Column(db.String(50), nullable=False)
     confirm = db.Column(db.Boolean, default=False)
     moderators = db.relationship('Moderator', secondary="competition_moderator", overlaps='competitions', lazy=True)
     teams = db.relationship('Team', secondary="competition_team", overlaps='competitions', lazy=True)
+    students = db.relationship('Student', secondary='competition_student', backref='competitions', lazy=True)
 
-    def __init__(self, name, date, location, level, max_score):
+    def __init__(self, name, date, location, level, max_score, type):
         self.name = name
         self.date = date
         self.location = location
         self.level = level
         self.max_score = max_score
+        self.type = type
         self.moderators = []
         self.teams = []
+        self.students = []
     
     def add_mod(self, mod):
         for m in self.moderators:
@@ -60,6 +65,13 @@ class Competition(db.Model):
             db.session.rollback()
             print("Something went wrong!")
             return None
+        
+    def add_student(self, student, score):
+        comp_student = CompetitionStudent(comp_id=self.id, student_id=student.id, score=score)
+        db.session.add(comp_student)
+        db.session.commit()
+
+
 
     def get_json(self):
         return {
