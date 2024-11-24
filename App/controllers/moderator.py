@@ -150,36 +150,95 @@ def update_ratings(mod_name, comp_name):
 
     if comp.type == "team":
         comp_teams = CompetitionTeam.query.filter_by(comp_id=comp.id).all()
+        participating_team_ids = {comp_team.team_id for comp_team in comp_teams}
+        #set deduction of points based on level for team competition
+        if comp.level == 1:
+            deduction_team = 0
+        elif comp.level==2:
+            deduction_team =1.3
+        elif comp.level == 3:
+            deduction_team=1.5
+        else:
+            deduction_team=0
+        
         for comp_team in comp_teams:
             team = Team.query.filter_by(id=comp_team.team_id).first()
             for stud in team.students:
                 stud.rating_score = (stud.rating_score * stud.comp_count + comp_team.rating_score) / (stud.comp_count + 1)
                 stud.comp_count += 1
-                try:
-                    db.session.add(stud)
-                    db.session.commit()
-                except Exception as e:
-                    db.session.rollback()
+                db.session.add(stud)
+        
+        
+        participating_team_ids = db.session.query(CompetitionTeam.team_id).filter_by(comp_id=comp.id).subquery()
+        non_participating_team = Student.query.filter(Student.id.notin_(participating_team_ids)).all()
+        
+        #deduct points from students
+        for stud in non_participating_team:
+            stud.rating_score = stud.rating_score - deduction_team
+            print(f"ID: {stud.id}, Name: {stud.username}, Rating Score: {stud.rating_score}, Competition Count: {stud.comp_count}")
+     
+        db.session.add(stud)
+    
+        try:
+                db.session.commit()
+        except Exception as e:
+                db.session.rollback()   
+                print(f"An error occurred while updating ratings: {e}")  
+                
+           
 
     elif comp.type == "single":
         competition_students = CompetitionStudent.query.filter_by(comp_id=comp.id).all()
+        participating_student_ids = {comp_student.student_id for comp_student in competition_students}
+        
+        #set deduction of points based on level for single competition
+        if comp.level == 1:
+            deduction = 1.1
+        elif comp.level ==2:
+            deduction =1.5
+        elif comp.level ==3:
+            deduction = 1.8
+        else:
+            deduction= 0
+
+
         for comp_student in competition_students:
             student = Student.query.filter_by(id=comp_student.student_id).first()
-            score = comp_student.score  
+            if not student:
+                continue  # Skip if the student record is not found
+
+            score = comp_student.score
             student.rating_score = (student.rating_score * student.comp_count + score) / (student.comp_count + 1)
             student.comp_count += 1
-            try:
-                db.session.add(student)
-                db.session.commit()
-            except Exception as e:
-                db.session.rollback()
+            db.session.add(student)
+            print(f"ID: {student.id}, Name: {student.username}, Rating Score: {student.rating_score}, Competition Count: {student.comp_count}")
+            
+        participating_student_ids = db.session.query(CompetitionStudent.student_id).filter_by(comp_id=comp.id).subquery()
+        non_participating_students = Student.query.filter(Student.id.notin_(participating_student_ids)).all()
+        
+        #deduct points from students
+        for student in non_participating_students:
+            student.rating_score = student.rating_score - deduction
+            print(f"ID: {student.id}, Name: {student.username}, Rating Score: {student.rating_score}, Competition Count: {student.comp_count}")
 
+        
+        
+            
+        db.session.add(student)
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"An error occurred while updating ratings: {e}")
+
+    # Mark the competition as confirmed
     comp.confirm = True
     try:
         db.session.add(comp)
         db.session.commit()
     except Exception as e:
         db.session.rollback()
+        print(f"An error occurred while confirming the competition: {e}")
 
     print(f"Results for {comp_name} finalized!")
     return True
