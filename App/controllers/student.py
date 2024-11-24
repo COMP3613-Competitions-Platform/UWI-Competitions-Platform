@@ -1,5 +1,5 @@
 from App.database import db
-from App.models import Student, Competition, Notification, CompetitionTeam
+from App.models import Student, Competition, Notification, CompetitionTeam, CompetitionStudent
 
 def create_student(username, password):
     student = get_student_by_username(username)
@@ -64,6 +64,10 @@ def display_student_info(username):
             for comp_team in team_comps:
                 comp = Competition.query.filter_by(id=comp_team.comp_id).first()
                 competitions.append(comp.name)
+        student_comps = CompetitionStudent.query.filter_by(student_id=student.id).all()
+        for s in student_comps:
+            comp = Competition.query.filter_by(id = s.comp_id).first()
+            competitions.append(comp.name)
 
         profile_info = {
             "profile" : student.get_json(),
