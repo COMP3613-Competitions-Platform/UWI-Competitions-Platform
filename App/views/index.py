@@ -206,11 +206,7 @@ def student_profile_by_name(name):
     
     profile_info = display_student_info(student.username)
     competitions = profile_info['competitions']
-    """
-    competitions = Competition.query.filter(Competition.participants.any(id=user_id)).all()
-    ranking = Ranking.query.filter_by(student_id=user_id).first()
-    notifications= get_notifications(user.username)
-    """
+    
 
     return render_template('student_profile.html', student=student, competitions=competitions, user=current_user)
 
