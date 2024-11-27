@@ -234,6 +234,9 @@ h1 {
         <h2 style="color: white; padding-left: 50px;">Profile</h2>
     </div>
 
+
+     
+    
     <div id="sidepanel" class="sidepanel" style="font-family: helvetica;">
         <div class="sidepanel-header">
             <div class="sidepanel-title">
@@ -257,6 +260,7 @@ h1 {
     </div>
     {% endif %}
 </div>
+
 <div class="profile-info" style="font-family: helvetica;">
     <div class="student-info">
         <div class="student-image">
@@ -297,17 +301,16 @@ h1 {
                 {% endfor %}
             </ul>
         </div>
+
+        <!-- Button to View Student History -->
+     <div style="margin-top: 20px; text-align: center;">
+        <a href="{{ url_for('student_history') }}" class="btn-view-history">
+            View Student History
+        </a>
+    </div>
+    
     </div>
 </div>
     
-    <!---
-    <div class="notifications">
-        <h5>Notifications:</h5>
-        <ul>
-            {% for notification in notifications %}
-                <li>{{ notification.message }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    -->
+
 {% endblock %}

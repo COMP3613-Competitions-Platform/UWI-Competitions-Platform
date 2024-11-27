@@ -21,19 +21,6 @@
     {% endif %}
 
 
-<!--
-<div style="display: flex;">
-    <div>
-        <center><h2 style="margin-left: 50px; color: white;">Competitions= Listing</h2></center>
-    </div>
-    {% if session['user_type'] == 'moderator' %}
-    <div>
-        <button type="button" style="padding: 5px; margin-left: 50px; margin-top: 50px; background-color: black; height: 35px; border-radius: 15px; font-family: helvetica;">
-            <a style="color: white;" href="{{url_for('comp_views.create_comp_page')}}">Create Competition</a>
-        </button>
-    </div>
-    {% endif %}
-</div> -->
 
 
 
@@ -44,12 +31,12 @@
     <div class="card">
         <!-- Card Image and Content -->
         <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="/static/backgroundimage.avif"> <!-- Replace with a competition image -->
+            <img class="activator" src="/static/backgroundimage.avif"> 
         </div>
 
         <div class="card-content">
             <span class="card-title activator grey-text text-darken-4">
-                <h3 class="card-heading">{{competition.name}}</h3><i class="material-icons right">more_vert</i>
+                <h3  class="card-heading">{{competition.name}}</h3><i class="material-icons right more_vert">more_vert</i>
             </span>
             <p><b>Date: </b>{{competition.date.strftime("%d %B %Y")}}</p>
             <p><b>Location: </b>{{competition.location}}</p>
@@ -76,59 +63,5 @@
     {% endfor %}
 </div>
 
-  <!--
-<div class="competitions-card">
-    
-    {% for competition in competitions[::-1] %}
-        
-        <div class="card competition-card" >
-          
-    
-                <center>
-                    <div>
-                        <h3 class ="card-heading">{{competition.name}}</h3>
-                    </div>
-                </center>
-                <div>
-                    <p>____________________________________</p>
-                    <p><strong>Date: </strong>{{competition.date.strftime("%d %B %Y")}}</p>
-                    <p><strong>Location: </strong>{{competition.location}}</p>
-                    <p><strong>Level: </strong>{{competition.level}}</p>
-                    <p><strong>Type: </strong>{{competition.type}}</p>
-                    <p>____________________________________</p>
-                    
-
-                    <a href="{{url_for('comp_views.competition_details', id=competition.id)}}" class="btn-view-results">
-                        View Results
-                    </a>
-
-                    <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                      </div>
-
-                      
-                      <button class="btn-info">
-                        <i class="small material-icons">info_outline</i>
-                    </button>
-
-                    <div class="info-content">
-                        <p><strong>Max Score: </strong>{{competition.max_score}}</p>
-                        <p><strong>Moderators: </strong>
-                            {% for moderator in competition.moderators %}
-                                <a style="color: white" href="{{url_for('index_views.moderator_profile', id=moderator.id)}}">
-                                    <p>{{moderator.username}}</p>
-                                </a>
-                            {% endfor %}
-                        </p>
-                    </div>
-
-                    
-                </div>
-        </div>
-    
-    {% endfor %}
-
-</div> -->
  
 {% endblock %}

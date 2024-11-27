@@ -194,13 +194,13 @@ h5 {
 
 .card {
     width: 325px;
-    background-color: #ffffff;  /* Card background */
+    background-color: #161615; /* Card background */
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     margin: 20px;
     padding: 16px;
-    color: black;
+    color: rgb(255, 253, 253);
     transition: box-shadow 0.3s ease-in-out;
     font-family: playfair-display;
 }
@@ -209,12 +209,13 @@ h5 {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    color: white;
+    color: rgb(2, 32, 4);
 }
 
 .card-heading{
     font-family: playfair-display;
     font-weight:20px;
+    color:rgb(255, 255, 255)
 }
 
 
@@ -235,6 +236,21 @@ h5 {
 .card-body p {
     margin-bottom: 10px;
 }
+.card .card-reveal{
+    font-family: playfair-display;
+    font-size: medium;
+    font-weight: 10px;
+    background-color: #161615; 
+    color: white;
+}
+
+
+.grey-text.text-darken-4 {
+    color: #ffffff !important;
+    font-family: playfair-display;
+    font-size: large;
+
+}
 
 /* Button for View Results */
 .btn-view-results {
@@ -244,7 +260,7 @@ h5 {
     padding: 10px;
     margin-top: 15px;
     background-color: #0b4106;
-    color: white !important;
+    color: rgb(255, 255, 255) !important;
     text-decoration: none;
     font-weight: bold;
     justify-content: center;
@@ -258,25 +274,28 @@ h5 {
     background-color: #1c5827;
 }
 
-.card-reveal{
-    font-family: playfair-display;
-    font-size: medium;
-    font-weight: 10px;
+
+
+.material-icons.right.more_vert {
+    color: white;
+    font-size: 36px; /* Adjust the size as needed */
 }
+
 
 /* Create Competition Button Styles */
 .create-comp-button {
     display: flex;
-    justify-content: flex-end;  /* Align to the right */
+    justify-content: flex-end;  
     padding: 10px;
     margin-top: 15px;
+
 }
 
 .btn-create-comp {
-    display: flex;                   /* Use flexbox to align icon and text */
-    align-items: center;             /* Vertically center content */
-    background-color: #ffffff;
-    color: rgb(0, 0, 0) !important;
+    display: flex;                   
+    align-items: center;             
+    background-color: #161615; 
+    color: rgb(248, 245, 245) !important;
     text-decoration: none;
     font-weight: bold;
     border-radius: 8px;
