@@ -177,13 +177,13 @@ def update_ratings(mod_name, comp_name):
             stud.rating_score = stud.rating_score - deduction_team
             print(f"ID: {stud.id}, Name: {stud.username}, Rating Score: {stud.rating_score}, Competition Count: {stud.comp_count}")
      
-        db.session.add(stud)
+            db.session.add(stud)
     
         try:
-                db.session.commit()
+            db.session.commit()
         except Exception as e:
-                db.session.rollback()   
-                print(f"An error occurred while updating ratings: {e}")  
+            db.session.rollback()   
+            print(f"An error occurred while updating ratings: {e}")  
                 
            
 
