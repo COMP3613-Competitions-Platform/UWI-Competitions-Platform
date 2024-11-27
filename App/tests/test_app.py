@@ -271,6 +271,156 @@ class UnitTests(unittest.TestCase):
 
 
 
+
+class IntegrationTestCase(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app('testing')
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
+
+    # Integration Test: User Registration and Login
+    def test_user_registration_and_login(self):
+        user = Student(username="ryan", password="ryanpass")
+        user.set_password("ryanpass")
+        db.session.add(user)
+        db.session.commit()
+
+        retrieved_user = Student.query.filter_by(username="ryan").first()
+        self.assertIsNotNone(retrieved_user)
+        self.assertTrue(retrieved_user.check_password("ryanpass"))
+
+    # Integration Test: Competition Creation and Student Participation
+    def test_competition_creation_and_student_participation(self):
+        competition = Competition(
+            name="RunTime",
+            date=datetime.strptime("2024-06-09", "%Y-%m-%d").date(),
+            location="St. Augustine",
+            level=1,
+            max_score=25,
+            type="single"
+        )
+        db.session.add(competition)
+        db.session.commit()
+
+        student = Student(username="student1", password="studentpass")
+        #student.set_password()
+        db.session.add(student)
+        db.session.commit()
+
+        competition.students.append(student)
+        db.session.commit()
+
+        competition_from_db = Competition.query.get(competition.id)
+        self.assertEqual(competition_from_db.name, "RunTime")
+        self.assertEqual(len(competition_from_db.students), 1)
+        self.assertEqual(competition_from_db.students[0].username, "student1")
+
+    # Integration Test: Create a Team and Add Members
+    def test_create_team_and_add_members(self):
+        team = Team(name="Scrum Lords")
+        db.session.add(team)
+        db.session.commit()
+
+        student = Student(username="student2", password="studentpass2")
+         #student.set_password("studentpass2")
+        db.session.add(student)
+        db.session.commit()
+
+        team.students.append(student)
+        db.session.commit()
+
+        team_from_db = Team.query.get(team.id)
+        self.assertEqual(team_from_db.name, "Scrum Lords")
+        self.assertEqual(len(team_from_db.students), 1)
+        self.assertEqual(team_from_db.students[0].username, "student2")
+
+    # Integration Test: Competition Moderation
+    def test_competition_moderation(self):
+        competition = Competition(
+            name="CodeChamp",
+            date=datetime.strptime("2024-07-09", "%Y-%m-%d").date(),
+            location="Port of Spain",
+            level=2,
+            max_score=50,
+            type="single"
+        )
+        db.session.add(competition)
+        db.session.commit()
+
+        moderator = Moderator(username="mod1", password="modpass")
+         #moderator.set_password("modpass")
+        db.session.add(moderator)
+        db.session.commit()
+
+        competition.moderators.append(moderator)
+        db.session.commit()
+
+        competition_from_db = Competition.query.get(competition.id)
+        self.assertEqual(len(competition_from_db.moderators), 1)
+        self.assertEqual(competition_from_db.moderators[0].username, "mod1")
+
+    # Integration Test: Notifications for Students
+    def test_notifications_for_students(self):
+        student = Student(username="dan", password="danpass")
+        #student.set_password()
+        db.session.add(student)
+        db.session.commit()
+
+        notification = Notification(student_id=student.id, message="Your rank has changed!")
+        db.session.add(notification)
+        db.session.commit()
+
+        notifications = Notification.query.filter_by(student_id=student.id).all()
+        self.assertEqual(len(notifications), 1)
+        self.assertEqual(notifications[0].message, "Your rank has changed!")
+
+    # Integration Test: Full Workflow (Competition and Teams)
+    def test_full_competition_workflow(self):
+        competition = Competition(
+            name="FullTestComp",
+            date=datetime.strptime("2024-09-09", "%Y-%m-%d").date(),
+            location="Arima",
+            level=3,
+            max_score=100,
+            type="team"
+        )
+        db.session.add(competition)
+        db.session.commit()
+
+        team = Team(name="Winners")
+        db.session.add(team)
+        db.session.commit()
+
+        student = Student(username="stud3", password="studpass3")
+        student.set_password("studpass3")
+        db.session.add(student)
+        db.session.commit()
+
+        team.students.append(student)
+        db.session.commit()
+        competition.teams.append(team)
+        competition.students.append(student)
+        db.session.commit()
+
+        competition_from_db = Competition.query.get(competition.id)
+        self.assertEqual(len(competition_from_db.teams), 1)
+        self.assertEqual(len(competition_from_db.students), 1)
+        self.assertEqual(competition_from_db.teams[0].name, "Winners")
+        self.assertEqual(competition_from_db.students[0].username, "stud3")
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+
+
 '''
     Integration Tests
 
