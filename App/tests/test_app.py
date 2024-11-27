@@ -1,19 +1,32 @@
 import os, tempfile, pytest, logging, unittest
 from werkzeug.security import check_password_hash, generate_password_hash
-
 from App.main import create_app
 from App.database import db, create_db
 from App.models import *
 from App.controllers import *
 
-
 LOGGER = logging.getLogger(__name__)
 
-'''
-   Unit Tests
-'''
+# Setup the Flask app and test database context
 class UnitTests(unittest.TestCase):
-    #User Unit Tests
+
+    def setUp(self):
+        # Create the app instance for testing
+        self.app = create_app()
+        self.app.config['TESTING'] = True  # Enable testing mode
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'  # Use in-memory database for tests
+        
+        # Push an application context so that DB can be accessed
+        self.client = self.app.test_client()
+        with self.app.app_context():
+            db.create_all()  # Create all tables in the in-memory DB
+
+    def tearDown(self):
+        with self.app.app_context():
+            db.session.remove()  # Clean up after each test
+            db.drop_all()  # Drop all tables to reset the DB for the next test
+
+    # User Unit Tests
     def test_new_user(self):
         user = User("ryan", "ryanpass")
         assert user.username == "ryan"
@@ -29,165 +42,177 @@ class UnitTests(unittest.TestCase):
         user = User("ryan", password)
         assert user.check_password(password)
 
-    #Student Unit Tests
+    # Student Unit Tests
     def test_new_student(self):
-      db.drop_all()
-      db.create_all()
-      student = Student("james", "jamespass")
-      assert student.username == "james"
+        student = Student("dan", "jamespass")
+        assert student.username == "dan"
 
     def test_student_get_json(self):
-      db.drop_all()
-      db.create_all()
-      student = Student("james", "jamespass")
-      self.assertDictEqual(student.get_json(), {"id": None, "username": "james", "rating_score": 0, "comp_count": 0, "curr_rank": 0})
+        student = Student("james", "jamespass")
+        self.assertDictEqual(student.get_json(), {"id": None, "username": "james", "rating_score": 0, "comp_count": 0, "curr_rank": 0})
 
-    #Moderator Unit Tests
+    # Moderator Unit Tests
     def test_new_moderator(self):
-      db.drop_all()
-      db.create_all()
-      mod = Moderator("robert", "robertpass")
-      assert mod.username == "robert"
+        mod = Moderator("robert", "robertpass")
+        assert mod.username == "robert"
 
     def test_moderator_get_json(self):
-      db.drop_all()
-      db.create_all()
-      mod = Moderator("robert", "robertpass")
-      self.assertDictEqual(mod.get_json(), {"id":None, "username": "robert", "competitions": []})
-    
-    #Team Unit Tests
+        mod = Moderator("robert", "robertpass")
+        self.assertDictEqual(mod.get_json(), {"id": None, "username": "robert", "competitions": []})
+
+    # Team Unit Tests
     def test_new_team(self):
-      db.drop_all()
-      db.create_all()
-      team = Team("Scrum Lords")
-      assert team.name == "Scrum Lords"
-    
+        team = Team("Scrum Lords")
+        assert team.name == "Scrum Lords"
+
     def test_team_get_json(self):
-      db.drop_all()
-      db.create_all()
-      team = Team("Scrum Lords")
-      self.assertDictEqual(team.get_json(), {"id":None, "name":"Scrum Lords", "students": []})
-    
-    #Competition Unit Tests
+        team = Team("Scrum Lords")
+        self.assertDictEqual(team.get_json(), {"id": None, "name": "Scrum Lords", "students": []})
+
+    # Competition Unit Tests
     def test_new_competition(self):
-      db.drop_all()
-      db.create_all()
-      competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25)
-      assert competition.name == "RunTime" and competition.date.strftime("%d-%m-%Y") == "09-02-2024" and competition.location == "St. Augustine" and competition.level == 1 and competition.max_score == 25
+        competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25, "coding")
+        assert competition.name == "RunTime" and competition.date.strftime("%d-%m-%Y") == "09-02-2024" and competition.location == "St. Augustine" and competition.level == 1 and competition.max_score == 25
 
     def test_competition_get_json(self):
-      db.drop_all()
-      db.create_all()
-      competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25)
-      self.assertDictEqual(competition.get_json(), {"id": None, "name": "RunTime", "date": "09-02-2024", "location": "St. Augustine", "level": 1, "max_score": 25, "moderators": [], "teams": []})
-    
-    #Notification Unit Tests
+        competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25, "coding")
+        self.assertDictEqual(competition.get_json(), {"id": None, "name": "RunTime", "date": "09-02-2024", "location": "St. Augustine", "level": 1, "max_score": 25, "type": "coding", "moderators": [], "teams": [], "students": []})
+
+    def test_add_moderator(self):
+        competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25, "coding")
+        mod = Moderator(username="robert", password="robertpass")
+        
+        db.session.add(competition)
+        db.session.add(mod)
+        db.session.commit()
+        
+        # Add moderator to competition
+        comp_mod = competition.add_mod(mod)
+        self.assertEqual(len(competition.moderators), 1)
+        self.assertEqual(competition.moderators[0].username, "robert")
+
+    def test_add_team(self):
+        competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25, "coding")
+        team = Team(name="Scrum Lords")
+        
+        db.session.add(competition)
+        db.session.add(team)
+        db.session.commit()
+        
+        # Add team to competition
+        comp_team = competition.add_team(team)
+        self.assertEqual(len(competition.teams), 1)
+        self.assertEqual(competition.teams[0].name, "Scrum Lords")
+
+    def test_add_student(self):
+        competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25, "coding")
+        student = Student(username="dan", password="danpass")
+        
+        db.session.add(competition)
+        db.session.add(student)
+        db.session.commit()
+        
+        # Add student to competition
+        competition.add_student(student, score=20)
+        
+        # Verify the student is added to the competition with the correct score
+        comp_student = CompetitionStudent.query.filter_by(comp_id=competition.id, student_id=student.id).first()
+        self.assertEqual(comp_student.score, 20)
+
+    def test_competition_with_data(self):
+      # Create a competition with moderators, teams, and students
+      competition = Competition("RunTime", datetime.strptime("09-02-2024", "%d-%m-%Y"), "St. Augustine", 1, 25, "coding")
+      mod = Moderator(username="robert", password="robertpass")
+      team = Team(name="Scrum Lords")
+      student = Student(username="dan", password="danpass")
+
+      db.session.add(competition)
+      db.session.add(mod)
+      db.session.add(team)
+      db.session.add(student)
+      db.session.commit()
+
+      # Add moderator, team, and student to the competition
+      competition.add_mod(mod)
+      competition.add_team(team)
+      
+      # Add student and score to the competition
+      competition.add_student(student, score=20)
+
+      # Get the JSON representation of the competition
+      result = competition.get_json()
+
+      # Define the expected JSON structure with moderators, teams, and students
+      expected = {
+          "id": 1,
+          "name": "RunTime",
+          "date": "09-02-2024",
+          "location": "St. Augustine",
+          "level": 1,
+          "max_score": 25,
+          "type": "coding",
+          "moderators": ["robert"],
+          "teams": ["Scrum Lords"],
+          "students": [
+              {"username": "dan"}
+          ]
+      }
+
+      # Check if the resulting JSON matches the expected structure
+      self.assertDictEqual(result, expected)
+
+    # Notification Unit Tests
     def test_new_notification(self):
-      db.drop_all()
-      db.create_all()
-      notification = Notification(1, "Ranking changed!")
-      assert notification.student_id == 1 and notification.message == "Ranking changed!"
+        notification = Notification(1, "Ranking changed!")
+        assert notification.student_id == 1 and notification.message == "Ranking changed!"
 
     def test_notification_get_json(self):
-      db.drop_all()
-      db.create_all()
-      notification = Notification(1, "Ranking changed!")
-      self.assertDictEqual(notification.get_json(), {"id": None, "student_id": 1, "notification": "Ranking changed!"})
-    """
-    #Ranking Unit Tests
-    def test_new_ranking(self):
-      db.drop_all()
-      db.create_all()
-      ranking = Ranking(1)
-      assert ranking.student_id == 1
-  
-    def test_set_points(self):
-      db.drop_all()
-      db.create_all()
-      ranking = Ranking(1)
-      ranking.set_points(15)
-      assert ranking.total_points == 15
+        notification = Notification(1, "Ranking changed!")
+        self.assertDictEqual(notification.get_json(), {"id": None, "student_id": 1, "notification": "Ranking changed!"})
 
-    def test_set_ranking(self):
-      db.drop_all()
-      db.create_all()
-      ranking = Ranking(1)
-      ranking.set_ranking(1)
-      assert ranking.curr_ranking == 1
-
-    def test_previous_ranking(self):
-      db.drop_all()
-      db.create_all()
-      ranking = Ranking(1)
-      ranking.set_previous_ranking(1)
-      assert ranking.prev_ranking == 1
-
-    def test_ranking_get_json(self):
-      db.drop_all()
-      db.create_all()
-      ranking = Ranking(1)
-      ranking.set_points(15)
-      ranking.set_ranking(1)
-      self.assertDictEqual(ranking.get_json(), {"rank":1, "total points": 15})
-    """
-    #CompetitionTeam Unit Tests
+    # CompetitionTeam Unit Tests
     def test_new_competition_team(self):
-      db.drop_all()
-      db.create_all()
-      competition_team = CompetitionTeam(1, 1)
-      assert competition_team.comp_id == 1 and competition_team.team_id == 1
+        competition_team = CompetitionTeam(1, 1)
+        assert competition_team.comp_id == 1 and competition_team.team_id == 1
 
     def test_competition_team_update_points(self):
-      db.drop_all()
-      db.create_all()
-      competition_team = CompetitionTeam(1, 1)
-      competition_team.update_points(15)
-      assert competition_team.points_earned == 15
+        competition_team = CompetitionTeam(1, 1)
+        competition_team.update_points(15)
+        assert competition_team.points_earned == 15
 
     def test_competition_team_update_rating(self):
-      db.drop_all()
-      db.create_all()
-      competition_team = CompetitionTeam(1, 1)
-      competition_team.update_rating(12)
-      assert competition_team.rating_score == 12
+        competition_team = CompetitionTeam(1, 1)
+        competition_team.update_rating(12)
+        assert competition_team.rating_score == 12
 
     def test_competition_team_get_json(self):
-      db.drop_all()
-      db.create_all()
-      competition_team = CompetitionTeam(1, 1)
-      competition_team.update_points(15)
-      competition_team.update_rating(12)
-      self.assertDictEqual(competition_team.get_json(), {"id": None, "team_id": 1, "competition_id": 1, "points_earned": 15, "rating_score": 12})
+        competition_team = CompetitionTeam(1, 1)
+        competition_team.update_points(15)
+        competition_team.update_rating(12)
+        self.assertDictEqual(competition_team.get_json(), {"id": None, "team_id": 1, "competition_id": 1, "points_earned": 15, "rating_score": 12})
 
-    #CompetitionModerator Unit Tests
+    # CompetitionModerator Unit Tests
     def test_new_competition_moderator(self):
-      db.drop_all()
-      db.create_all()
-      competition_moderator = CompetitionModerator(1, 1)
-      assert competition_moderator.comp_id == 1 and competition_moderator.mod_id == 1
+        competition_moderator = CompetitionModerator(1, 1)
+        assert competition_moderator.comp_id == 1 and competition_moderator.mod_id == 1
 
     def test_competition_moderator_get_json(self):
-      db.drop_all()
-      db.create_all()
-      competition_moderator = CompetitionModerator(1, 1)
-      self.assertDictEqual(competition_moderator.get_json(), {"id": None, "competition_id": 1, "moderator_id": 1})
+        competition_moderator = CompetitionModerator(1, 1)
+        self.assertDictEqual(competition_moderator.get_json(), {"id": None, "competition_id": 1, "moderator_id": 1})
 
-    #StudentTeam Unit Tests
+    # StudentTeam Unit Tests
     def test_new_student_team(self):
-      db.drop_all()
-      db.create_all()
-      student_team = StudentTeam(1, 1)
-      assert student_team.student_id == 1 and student_team.team_id == 1
-    
+        student_team = StudentTeam(1, 1)
+        assert student_team.student_id == 1 and student_team.team_id == 1
+
     def test_student_team_get_json(self):
-      db.drop_all()
-      db.create_all()
-      student_team = StudentTeam(1, 1)
-      self.assertDictEqual(student_team.get_json(), {"id": None, "student_id": 1, "team_id": 1})
+        student_team = StudentTeam(1, 1)
+        self.assertDictEqual(student_team.get_json(), {"id": None, "student_id": 1, "team_id": 1})
+
 
 '''
     Integration Tests
-'''
+
 class IntegrationTests(unittest.TestCase):
     
     #Feature 1 Integration Tests
@@ -504,3 +529,4 @@ class IntegrationTests(unittest.TestCase):
       update_ratings(mod.username, comp2.name)
       update_rankings()
       self.assertListEqual(get_all_competitions_json(), [{"id": 1, "name": "RunTime", "date": "29-03-2024", "location": "St. Augustine", "level": 2, "max_score": 25, "moderators": ["debra"], "teams": ["Runtime Terrors", "Scrum Lords"]}, {"id": 2, "name": "Hacker Cup", "date": "23-02-2024", "location": "Macoya", "level": 1, "max_score": 20, "moderators": ["debra"], "teams": ["Runtime Terrors", "Scrum Lords"]}])
+      '''

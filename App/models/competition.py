@@ -17,7 +17,7 @@ class Competition(db.Model):
     confirm = db.Column(db.Boolean, default=False)
     moderators = db.relationship('Moderator', secondary="competition_moderator", overlaps='competitions', lazy=True)
     teams = db.relationship('Team', secondary="competition_team", overlaps='competitions', lazy=True)
-    students = db.relationship('Student', secondary='competition_student', backref='competitions', lazy=True)
+    students = db.relationship('Student', secondary='competition_student', overlaps="competition_student, student", lazy=True)
 
     def __init__(self, name, date, location, level, max_score, type):
         self.name = name
@@ -79,11 +79,18 @@ class Competition(db.Model):
             "name": self.name,
             "date": self.date.strftime("%d-%m-%Y"),
             "location": self.location,
-            "level" : self.level,
-            "max_score" : self.max_score,
+            "level": self.level,
+            "max_score": self.max_score,
+            "type": self.type,
             "moderators": [mod.username for mod in self.moderators],
-            "teams": [team.name for team in self.teams]
+            "teams": [team.name for team in self.teams],
+            "students": [
+                {"username": student.username}  # Use self.students directly
+                for student in self.students
+            ]
         }
+
+
 
     def toDict(self):
         return {
