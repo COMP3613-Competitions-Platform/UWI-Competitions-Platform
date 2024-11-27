@@ -1,5 +1,6 @@
 from App.database import db
-from App.models import Student, Competition, Notification, CompetitionTeam, CompetitionStudent
+from App.models import Student, Competition, Notification, CompetitionTeam, RankingHistory, CompetitionStudent
+from datetime import date
 
 def create_student(username, password):
     student = get_student_by_username(username)
@@ -85,8 +86,9 @@ def display_notifications(username):
     else:
         return {"notifications":[notification.to_Dict() for notification in student.notifications]}
 
-def update_rankings():
+def update_rankings(comp_name):
     students = get_all_students()
+    comp = Competition.query.filter_by(name=comp_name).first()
     
     students.sort(key=lambda x: (x.rating_score, x.comp_count), reverse=True)
 
@@ -118,7 +120,11 @@ def update_rankings():
             notification = Notification(student.id, message)
             student.notifications.append(notification)
 
+            history = RankingHistory(student_id=student.id, date=comp.date, rank=student.curr_rank, rating=student.rating_score)
+            student.ranking_history.append(history)
             try:
+                db.session.add(notification)
+                db.session.add(history)
                 db.session.add(student)
                 db.session.commit()
             except Exception as e:

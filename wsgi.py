@@ -71,7 +71,8 @@ def initialize():
         for competition in reader:
             if competition['comp_name'] != 'TopCoder':
                 update_ratings(competition['mod_name'], competition['comp_name'])
-                update_rankings()
+                comp = create_competition(competition['mod_name'], competition['comp_name'], competition['date'], competition['location'], competition['level'], competition['max_score'], competition['type'])
+                update_rankings(competition['comp_name'])
             #db.session.add(comp)
         #db.session.commit()
     

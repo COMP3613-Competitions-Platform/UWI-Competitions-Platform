@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify, session
 from flask_jwt_extended import jwt_required, current_user as jwt_current_user
 from flask_login import login_required, login_user, current_user, logout_user
-from App.models import db
+from App.models import db, Notification
 from App.controllers import *
 import csv
 
@@ -146,7 +146,7 @@ def init():
         for competition in reader:
             if competition['comp_name'] != 'TopCoder':
                 update_ratings(competition['mod_name'], competition['comp_name'])
-                update_rankings()
+                update_rankings(competition['comp_name'])
             #db.session.add(comp)
         #db.session.commit()
     
@@ -189,13 +189,14 @@ def student_profile(id):
     
     profile_info = display_student_info(student.username)
     competitions = profile_info['competitions']
+    notifications= Notification.query.filter_by(student_id=student.id).all()
     """
     competitions = Competition.query.filter(Competition.participants.any(id=user_id)).all()
     ranking = Ranking.query.filter_by(student_id=user_id).first()
-    notifications= get_notifications(user.username)
+    
     """
 
-    return render_template('student_profile.html', student=student, competitions=competitions, user=current_user)
+    return render_template('student_profile.html', student=student, competitions=competitions, user=current_user, notifications=notifications)
 
 @index_views.route('/student_profile/<string:name>', methods=['GET'])
 def student_profile_by_name(name):

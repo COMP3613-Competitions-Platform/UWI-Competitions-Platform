@@ -5,5 +5,7 @@ from .team import *
 from .competition import *
 from .competition_moderator import *
 from .competition_team import *
+from .competition_student import *
 from .student_team import *
 from .notification import *
+from .ranking import *

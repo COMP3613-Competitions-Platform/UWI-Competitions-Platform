@@ -300,14 +300,31 @@ h1 {
     </div>
 </div>
     
-    <!---
-    <div class="notifications">
-        <h5>Notifications:</h5>
-        <ul>
-            {% for notification in notifications %}
-                <li>{{ notification.message }}</li>
-            {% endfor %}
-        </ul>
+    
+
+
+    <!-- Ranking History Section -->
+    <div style="color: white;" class="ranking-history">
+        <center><p style="font-family: optima;">Ranking History</p></center>
+        <table style="width: 100%; font-family: helvetica; color: white; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid white; padding: 8px;">Date</th>
+                    <th style="border: 1px solid white; padding: 8px;">Rank</th>
+                    <th style="border: 1px solid white; padding: 8px;">Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in student.ranking_history[::-1] %}
+                <tr>
+                    <td style="border: 1px solid white; padding: 8px;">{{ history.date }}</td>
+                    <td style="border: 1px solid white; padding: 8px;">{{ history.rank }}</td>
+                    <td style="border: 1px solid white; padding: 8px;">{{ "%.2f" | format(history.rating) }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    -->
+    
 {% endblock %}
