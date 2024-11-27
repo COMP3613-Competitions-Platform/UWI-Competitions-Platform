@@ -209,6 +209,67 @@ class UnitTests(unittest.TestCase):
         student_team = StudentTeam(1, 1)
         self.assertDictEqual(student_team.get_json(), {"id": None, "student_id": 1, "team_id": 1})
 
+        # RankingHistory Unit Tests
+    def test_new_ranking_history(self):
+        # Create a student object
+        student = Student(username="dan", password="danpass")
+        db.session.add(student)
+        db.session.commit()
+
+        # Create a RankingHistory entry
+        rank_history = RankingHistory(student_id=student.id, date=datetime(2024, 11, 27), rank=1, rating=1500)
+        db.session.add(rank_history)
+        db.session.commit()
+
+        # Test if the ranking history entry is created correctly
+        self.assertEqual(rank_history.student_id, student.id)
+        self.assertEqual(rank_history.rank, 1)
+        self.assertEqual(rank_history.rating, 1500)
+        self.assertEqual(rank_history.date, datetime(2024, 11, 27))
+
+    def test_ranking_history_to_dict(self):
+        # Create a student object
+        student = Student(username="dan", password="danpass")
+        db.session.add(student)
+        db.session.commit()
+
+        # Create a RankingHistory entry
+        rank_history = RankingHistory(student_id=student.id, date=datetime(2024, 11, 27), rank=1, rating=1500)
+        
+        # Get the dictionary representation of the object
+        result_dict = rank_history.to_dict()
+
+        # Expected dictionary format
+        expected_dict = {
+            "id": None,  # The ID will be None until the object is committed
+            "student_id": student.id,
+            "date": datetime(2024, 11, 27),
+            "rank": 1,
+            "rating": 1500
+        }
+
+        # Compare the returned dictionary with the expected one
+        self.assertDictEqual(result_dict, expected_dict)
+
+    def test_ranking_history_in_db(self):
+        # Create a student object
+        student = Student(username="dan", password="danpass")
+        db.session.add(student)
+        db.session.commit()
+
+        # Create a RankingHistory entry
+        rank_history = RankingHistory(student_id=student.id, date=datetime(2024, 11, 27), rank=1, rating=1500)
+        db.session.add(rank_history)
+        db.session.commit()
+
+        # Query the database to verify that the ranking history was saved
+        saved_rank_history = RankingHistory.query.first()
+        self.assertEqual(saved_rank_history.student_id, student.id)
+        self.assertEqual(saved_rank_history.rank, 1)
+        self.assertEqual(saved_rank_history.rating, 1500)
+        self.assertEqual(saved_rank_history.date, datetime(2024, 11, 27))
+
+
 
 '''
     Integration Tests
