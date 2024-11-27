@@ -153,19 +153,7 @@ def init():
     competitions_file.close()
 
     return render_template('leaderboard.html', leaderboard=display_rankings(), user=current_user)
-    """
-@index_views.route('/health', methods=['GET'])
-def health_check():
-    return jsonify({'status':'healthy'})
 
-@index_views.route('/healthcheck', methods=['GET'])
-def health():
-    return jsonify({'status':'healthy'})
-
-#@index_views.route('/Student_Profile/<int:user_id>')
-#def Student_Profile(user_id):
- #   return render_template('Student_Profile.html', user_id=user_id)
-"""
 
 @index_views.route('/profile')
 def profile():
@@ -190,11 +178,7 @@ def student_profile(id):
     profile_info = display_student_info(student.username)
     competitions = profile_info['competitions']
     notifications= Notification.query.filter_by(student_id=student.id).all()
-    """
-    competitions = Competition.query.filter(Competition.participants.any(id=user_id)).all()
-    ranking = Ranking.query.filter_by(student_id=user_id).first()
-    
-    """
+
 
     return render_template('student_profile.html', student=student, competitions=competitions, user=current_user, notifications=notifications)
 
@@ -217,65 +201,11 @@ def moderator_profile(id):
 
     if not moderator:
         return render_template('404.html')
-    """
-    profile_info = display_student_info(student.username)
-    competitions = profile_info['competitions']
-    
-    competitions = Competition.query.filter(Competition.participants.any(id=user_id)).all()
-    ranking = Ranking.query.filter_by(student_id=user_id).first()
-    notifications= get_notifications(user.username)
-    """
+
 
     return render_template('moderator_profile.html', moderator=moderator, user=current_user)
 
-    """
-@index_views.route('/register_competition', methods=['POST'])
-def Register_Competition():
-    username = request.form.get('username')
-    competition_name = request.form.get('competition_name')
 
-    result = register_student(username, competition_name)
-    if result:
-        return f'Successfully registered {username} for {competition_name}'
-    else:
-        return 'Registration failed'
-
-@index_views.route('/student_ranking/<int:id>')
-def student_rank(id):
-    student =get_student(id)
-
-    if not student:
-        return render_template('404.html')
-    
-    competitions = Competition.query.filter(Competition.participants.any(id=user_id)).all()
-    ranking = Ranking.query.filter_by(student_id=user_id).first()
-
-    ranking= ranking.curr_ranking
-    
-    return jsonify(student.curr_rank) 
-
-@index_views.route('/api/moderator', methods=['POST'])
-def create_moderator():
-    data = request.json
-    mod = create_moderator(data['username'], data['password'])
-    if mod:
-        return jsonify({'message': f"Moderator: {mod.username} created!"})
-    else:
-        return jsonify({'message': "Failed to create moderator!"})
-"""       
-"""
-@index_views.route('/login')
-def login():
-    return render_template('login.html')
-
-    
-@index_views.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        create_student(request.form['username'], request.form['password'])
-        return render_template('login.html')#, students=get_all_students())#,get_ranking=get_ranking,display_rankings=display_rankings,competitions=get_all_competitions())
-    return render_template('signup.html')
-"""
 
 @index_views.route('/init_postman', methods=['GET'])
 def init_postman():
