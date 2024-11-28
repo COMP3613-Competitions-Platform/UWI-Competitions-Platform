@@ -109,7 +109,7 @@ h5 {
 }
 
 .materialize-textarea{
-    color:rgb(1, 1, 1);
+    color:rgb(1, 1, 1) !important;
 }
 
 .input-field{
