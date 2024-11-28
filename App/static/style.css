@@ -804,3 +804,94 @@ h5 {
 
 
 
+/* Leaderboard styling*/
+/* Leaderboard Section Styles */
+.tables-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Ensures there's spacing above the tables */
+    color:white;
+    font-family: 'Playfair Display', serif;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid white;
+    font-family: 'Playfair Display', serif;
+    font-size: x-large;
+}
+
+.leaderboard-table tbody tr:hover {
+    background-color: black;
+}
+
+.leaderboard-table tbody tr td a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.leaderboard-table tbody tr td a:hover {
+    text-decoration: underline;
+}
+
+/* Styling for leaderboard heading */
+.leaderboard-table h2 {
+    color: white;
+    background-color: black;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Table styling for competition list */
+.competition-table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #161615;
+    color: white;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.competition-table th, .competition-table td {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #444;
+}
+
+.competition-table th {
+    background-color: #343A40;
+}
+
+.competition-table td {
+    background-color: #2c2f38;
+}
+
+.competition-table tr:hover {
+    background-color: #444;
+}
+
+/* Link styling */
+.competition-table a {
+    color: white;
+    text-decoration: underline;
+}
+
+.competition-table tbody tr td a:hover {
+    text-decoration: underline;
+}
+
+/* General table styles */
+.leaderboard-table, .competition-table {
+    font-family: verdana;
+}
