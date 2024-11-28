@@ -5,65 +5,30 @@
 {{ super() }}
 
 {% block content %}
-
-<style>
-    .competition-details {
-        margin-top: 20px;
-    }
-
-    .card {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 10px;
-        background-color: #fff;
-        transition: box-shadow 0.3s;
-        color: black;
-    }
-
-    .card:hover {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .teams li {
-        list-style-type: none;
-    }
-
-    .table th,
-    .table td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid white;
-    }
-
-    .table tbody tr:hover {
-        background-color: black;
-    }
-
-</style>
 <div style="display: flex;">
     <div>
-        <center><h2 style="margin-left: 50px; color: white;">Competition Details</h2></center>
+        <center><h2 style = "color:white;">Competition Details</h2></center>
     </div>
     <div>
         {% if session['user_type'] == 'moderator' and moderator in competition.moderators and not competition.confirm %}
-        <button type="button" style="background-color: black; padding: 5px; margin-left: 50px; margin-top: 50px; width: 120px; height: 35px; border-radius: 15px; font-family: helvetica;">
-            <a style="color: white" href="{{ url_for('comp_views.add_results_page', comp_id=competition.id) }}">Add Results</a>
+        <button type="button">
+            <a href="{{ url_for('comp_views.add_results_page', comp_id=competition.id) }}">Add Results</a>
         </button>
-        <button type="button" style="background-color: black; padding: 5px; margin-left: 50px; margin-top: 50px; width: 120px; height: 35px; border-radius: 15px; font-family: helvetica;">
-            <a style="color: white" href="{{ url_for('comp_views.confirm_results', comp_name=competition.name) }}">Confirm Results</a>
+        <button type="button">
+            <a href="{{ url_for('comp_views.confirm_results', comp_name=competition.name) }}">Confirm Results</a>
         </button>
         {% endif %}
     </div>
 </div>
-<div class="container" style="font-family: serif;">
+
+<div class="container">
     {% if not competition.confirm %}
-        <center> <h4 style="color: white; background-color: black; border-radius: 15px;">{{ competition.name }} Unofficial Results</h4> </center>
+        <center><h4 class="competition-status">{{ competition.name }} Unofficial Results</h4></center>
     {% else %}
-        <center> <h4 style="color: white; background-color: black; border-radius: 15px;">{{ competition.name }} Official Results</h4> </center>
+        <center><h4 class="competition-status">{{ competition.name }} Official Results</h4></center>
     {% endif %}
 
-    <table class="table" style="color: white; font-family: verdana;">
+    <table class="competition-table">
         <thead>
             <tr>
                 <th><center>Rank</center></th>
@@ -84,11 +49,11 @@
                         <td><center>{{ row['team'] }}</center></td>
                         <td>
                             {% for student in row['members'] %}
-                                <center><a style="color: white;" href="{{ url_for('index_views.student_profile_by_name', name=student) }}">{{ student }}</a></center>
+                                <center><a href="{{ url_for('index_views.student_profile_by_name', name=student) }}">{{ student }}</a></center>
                             {% endfor %}
                         </td>
                     {% else %}
-                        <td><center><a style="color: white;" href="{{ url_for('index_views.student_profile_by_name', name=row['student']) }}">{{ row['student'] }}</a></center></td>
+                        <td><center><a href="{{ url_for('index_views.student_profile_by_name', name=row['student']) }}">{{ row['student'] }}</a></center></td>
                     {% endif %}
                     <td><center>{{ row['score'] }}</center></td>
                 </tr>

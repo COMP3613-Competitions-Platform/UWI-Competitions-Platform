@@ -242,7 +242,7 @@ h5 {
 .card-heading{
     font-family: playfair-display;
     font-weight:20px;
-    color:rgb(255, 255, 255)
+    color:rgb(19, 18, 18)
 }
 
 
@@ -894,4 +894,98 @@ h5 {
 /* General table styles */
 .leaderboard-table, .competition-table {
     font-family: verdana;
+}
+
+
+/* Competition Details*/
+/* Competition Details Section Styles */
+.competition-details {
+    margin-top: 20px;
+}
+
+/* Card Styling */
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ccc;
+    transition: box-shadow 0.3s;
+    color: black;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Teams List Styling */
+.teams li {
+    list-style-type: none;
+}
+
+/* Table Styling */
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid white;
+}
+
+.table tbody tr:hover {
+    background-color: black;
+}
+
+/* Button Styling */
+button[type="button"] {
+    background-color: black;
+    padding: 5px;
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 120px;
+    height: 35px;
+    border-radius: 15px;
+    font-family: helvetica;
+}
+
+button[type="button"] a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Header Styling */
+.competition-details h2 {
+    margin-left: 50px;
+    color: white;
+}
+
+/* Competition Status */
+.competition-status {
+    color: white;
+    background-color: black;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Table Header and Row Styling */
+.competition-table th, .competition-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid white;
+    font-family: "playfair display", serif;
+    font-size: x-large;
+}
+
+.competition-table tbody tr:hover {
+    background-color: black;
+}
+
+.competition-table tbody tr td a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.competition-table tbody tr td a:hover {
+    text-decoration: underline;
 }
