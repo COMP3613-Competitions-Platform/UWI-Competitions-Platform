@@ -237,7 +237,7 @@ h5 {
     margin-bottom: 10px;
 }
 .card .card-reveal{
-    font-family: playfair-display;
+    font-family: 'Playfair Display', serif;
     font-size: medium;
     font-weight: 10px;
     background-color: #161615; 
@@ -305,10 +305,392 @@ h5 {
     padding: 10px 20px;  /* Add padding around the text and icon */
 }
 
+
+/* CSS for Student Profile */
+.student-profile .notifications {
+    border: 5px solid #ccc; 
+    padding: 10px; 
+    margin-top: 10px;
+}
+
+.student-profile .notifications ul {
+    list-style-type: none;
+}
+
+.student-profile .notifications li {
+    margin-bottom: 15px; 
+}
+
+.student-profile .headers {
+    width: 100%;
+    display: flex;
+}
+
+.student-profile h1 {
+    padding: 2vw 0vw 0vw 2vw;
+    margin: 0vw;
+}
+
+.student-profile .profile-info {
+      display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: 15px;
+    width: 100%;
+    height: auto;
+    max-height: 80vh; /* Limit the height of the profile card */
+    overflow-y: auto; /* Add scroll if content exceeds max height */
+}
+
+.student-profile .student-info {
+    border-radius: 25px;
+    width: 30%;
+    height: 30%;
+    outline-style: solid;
+    background-color: black;
+}
+
+.student-profile .student-image {
+    background-color: #000000;
+    border-radius: 25px;
+    padding: 0vw;
+}
+
+.student-profile .student-username {
+    color: white;
+    text-align: center;
+    padding: 0vw;
+    font-size: 3vw;
+}
+
+.student-profile .results-info {
+    width: 70%;
+}
+
+.student-profile .ranking-info {
+    display: flex;
+    height: 12vw;
+    margin: auto;
+}
+
+.student-profile .rank,
+.student-profile .rating-score {
+    border-radius: 25px;
+    width: 21%;
+    outline-style: solid;
+    outline-color: #2c2f38;
+    margin: auto;
+    text-align: center;
+    font-size: 2vw;
+    color: white;
+    background-color: black;
+}
+
+.student-profile .competition-list {
+    width: 95%;
+    margin: auto;
+    margin-top: 1.5vw;
+    outline-style: solid;
+    font-size: 2vw;
+    overflow-y: scroll;
+    height: 20vw;
+    color: white;
+    background-color: black;
+}
+
+.student-profile .competition-list li {
+    display: flex;
+    padding-left: 2vw;
+    margin: 2vw;
+    font-size: 1.5vw;
+    outline-style: solid;
+    border-radius: 25px;
+    color: white;
+    background-color: #343A40;
+}
+
+.student-profile .sidepanel {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #000000;
+    overflow-x: hidden;
+    padding-top: 3vw;
+    transition: 0.5s;
+    outline-color:#0b4106;
+}
+
+.student-profile .openbutton {
+    width: 5%;
+    margin-left: auto;
+    margin-top: 2vw;
+    margin-right: 2vw;
+}
+
+.student-profile .mail-icon {
+    width: 75%;
+    margin-left: auto;
+    margin-right: 2vw;
+    padding-left: auto;
+    padding-right: 0vw;
+    border-radius: 25%;
+    justify-content: flex-end;
+}
+
+.student-profile .sidepanel-header {
+    display: flex;
+    margin: 0vw 2vw 2vw 2vw;
+}
+
+.student-profile .sidepanel-title {
+    color: #EEEEEE;
+}
+
+.student-profile .sidepanel-closebutton {
+    margin-left: auto;
+    margin-right: 0vw;
+}
+
+.student-profile .sidepanel-content ul li{
+    color: white;
+    background-color: #343A40;
+    border-radius: 25px;
+    height: 5vw;
+    margin: 2vw;
+    padding: 1vw;
+    outline-style: solid;
+    outline-color:#0b4106;
+}
+
+@media only screen and (max-width: 700px) {
+    .student-profile .headers {
+        display: block;
+    }
+
+    .student-profile h1 {
+        text-align: center;
+    }
+
+    .student-profile .profile-info {
+        display: block;
+    }
+
+    .student-profile .student-info {
+        width: 90%;
+        margin: auto;
+    }
+
+    .student-profile .results-info {
+        width: 90%;
+    }
+
+    .student-profile .student-username {
+        font-size: 10vw;
+    }
+
+    .student-profile .results-info {
+        width: 100%;
+    }
+
+    .student-profile .ranking-info {
+        height: 30vw;
+    }
+
+    .student-profile .rank {
+        width: 40%;
+        font-size: 5vw;
+    }
+
+    .student-profile .rating-score {
+        width: 40%;
+        font-size: 5vw;
+    }
+
+    .student-profile .competition-list {
+        font-size: 5vw;
+        height: 50vw;
+        margin-top: 5vw;
+    }
+
+    .student-profile .competition-list li {
+        font-size: 5vw;
+    }
+}
+
 .btn-create-comp .material-icons {
     margin-right: 10px;  /* Add some space between the icon and the text */
     font-size: 20px;     /* Adjust icon size */
 }
+
+
+
+/* Ranking History Table Styling */
+/* Ranking History Container */
+.ranking-history-container {
+    font-family: 'Playfair Display', serif; 
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2c2f38;  /* Dark background for container */
+    border-radius: 8px;
+    width: 80%;  /* Ensure it doesn’t stretch full width */
+    color: white;
+    outline-color: #2c2f38;
+}
+
+/* Ranking History Header */
+.ranking-header {
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 20px;
+    font-weight: bold;
+    font-family: 'Playfair Display', serif; 
+}
+
+/* Styling the Ranking History Table */
+.ranking-history-table {
+    width: 100%;
+    border-collapse: collapse;  /* Ensures borders collapse into one */
+    margin-top: 20px;
+    table-layout: fixed;  /* Fixes the table layout */
+    font-weight: 10px;
+    font-size: large;
+}
+
+/* Table Headers */
+.ranking-history-table th {
+    padding: 12px;
+    background-color: #343A40;  /* Dark background for the header */
+    text-align: center;  /* Horizontally center the text */
+    font-size: 1.2rem;
+    border: 2px solid #444;  /* Thick border around each header */
+    color: white;
+}
+
+/* Table Data Cells */
+.ranking-history-table td {
+    padding: 12px;
+    background-color: #161615;  /* Dark background for rows */
+    text-align: center;  /* Horizontally center the text */
+    font-size: 1rem;
+    border: 2px solid #444;  /* Thick border around each cell */
+    color: white;
+}
+
+/* Hover effect for table rows */
+.ranking-history-table tr:hover {
+    background-color: #444;  /* Lighten background on hover */
+}
+
+/* Scrollable Table Body */
+.ranking-history-table tbody {
+    display: block;
+    height: 300px;  /* Fixed height for scrolling */
+    overflow-y: auto;
+    width: 100%;
+}
+
+/* Ensure table header and body align properly */
+.ranking-history-table thead, .ranking-history-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Optional: Add some padding inside each row for better spacing */
+.ranking-history-table tr td,
+.ranking-history-table tr th {
+    padding: 15px;
+}
+
+/* General Wrapper */
+.wrapper {
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #161615;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.row ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.row li {
+    width: 30%; /* Adjusted width for spacing */
+    text-align: center;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.title-hide {
+    display: none;
+}
+
+/* Table styling for competition list */
+.competition-table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #161615;  
+    color: white;
+    border-collapse: collapse; 
+    table-layout: fixed; 
+    
+     max-width: 100%; /* Ensure there's no max width restriction */
+    
+}
+
+/* Center content within table headers and cells */
+.competition-table th, .competition-table td {
+    padding: 12px;
+    text-align: center;  /* Horizontally center the text */
+    vertical-align: middle;  /* Vertically center the text */
+    border-bottom: 1px solid #444;  /* Border for rows */
+}
+
+.competition-table th {
+    background-color: #343A40;  /* Darker header background */
+}
+
+.competition-table td {
+    background-color: #2c2f38;  /* Darker row background */
+}
+
+/* Hover Effect for Rows */
+.competition-table tr:hover {
+    background-color: #444;
+}
+
+/* Link styling */
+.competition-table a {
+    color: white;
+    text-decoration: underline;
+}
+
+
+
+
 /*leaderboard styles*/
 
     .tables-container {
