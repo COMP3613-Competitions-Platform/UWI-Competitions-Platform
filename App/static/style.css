@@ -7,6 +7,10 @@ body {
     background-repeat: no-repeat;
     font-family: 'Playfair Display', serif; 
     background-image: linear-gradient(#0b4106, #020000);
+    height:100%;
+    margin:0;
+    overflow-x: hidden;  /* Avoid horizontal scroll */
+
 
 }
 
@@ -330,10 +334,12 @@ h5 {
 
 
 /* CSS for Student Profile */
+ 
 .student-profile .notifications {
     border: 5px solid #ccc; 
     padding: 10px; 
     margin-top: 10px;
+    min-height: 100vh;  /* Ensure the profile section takes full viewport height */
 }
 
 .student-profile .notifications ul {
@@ -355,7 +361,7 @@ h5 {
 }
 
 .student-profile .profile-info {
-      display: flex;
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 20px;
@@ -370,6 +376,7 @@ h5 {
     border-radius: 25px;
     width: 30%;
     height: 30%;
+    padding: 10px;
     outline-style: solid;
     background-color: black;
 }
@@ -748,8 +755,52 @@ h5 {
         text-decoration: underline;
     }
 
- /*create competition
- /* Competition Creation Page Styles */
+/*Moderator Profile*/
 
- 
+
+.moderator-info {
+    background-color: black;
+    border-radius: 25px;
+    width: 30%;
+    height: 80%;
+    outline-style: solid;
+    padding: 10px;
+    justify-content: center;
+}
+
+.moderator-image {
+    background-color: #ffffff;
+    border-radius: 25px;
+    padding: 10px;
+    width:25%;
+    justify-content: center;
+}
+
+.moderator-username {
+    text-align: center;
+    padding: 0vw;
+    font-size: 3vw;
+    color: white;
+}
+
+
+
+@media only screen and (max-width: 700px) {
+    h1 {
+        text-align: center;
+    }
+
+
+    .moderator-info {
+        width: 90%;
+        margin: auto;
+    }
+
+    .moderator-username {
+        font-size: 10vw;
+    }
+
+}
+
+
 
