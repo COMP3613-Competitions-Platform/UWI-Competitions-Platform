@@ -4,49 +4,59 @@
 
 {{ super() }}
 
-{% block content %}
-<center>
-  <h2 style="color: white;">Competition Registration</h2>
-</center>
 
-<main class="container" style="padding: 15px; background-color: black; border-radius: 25px;">
-  <form name="addForm" class="card" method="POST" action="/createcompetition" style="background-color: black; color: white;">
-    <div class="card-content" style="font-family: helvetica;">
-      <span class="card-title" style="font-family: optima;">Create Competition</span>
+{% block content %}
+
+<h2 style="color:white;">Competition Registration</h2>
+<div class="signup-page"> 
+   <div class="center">
+  <form name="addForm" method="POST" action="/createcompetition">
+
+    <div class="card-content" >
+
+      <span class="card-title"> <h5>Create Competition </h5> </span>
+
         <div class="input-field">
-          <input style="color: white;" type="text" name="name" placeholder="Enter Comp Name" class="materialize-textarea" required>
+          <input type="text" name="name" placeholder="Enter Comp Name" class="materialize-textarea" required>
           <label for="name">Competition Name</label>
         </div>
+
         <div class="input-field">
-          <input style="color: white;" type="date" name="date" style="color: white;" required>
+          <input type="date" name="date" required>
           <label for="date">Competition Date</label>
         </div>
+
         <div class="input-field">
-            <input style="color: white;" type="text" name="location" placeholder="Enter Comp Location" class="materialize-textarea" required>
+            <input type="text" name="location" placeholder="Enter Comp Location" class="materialize-textarea" required>
             <label for="location">Competition Location</label>
         </div>
+
         <div class="input-field">
-            <input style="color: white;" type="number" name="level" placeholder="Enter Comp Level" min="1" max="5">
+            <input type="number" name="level" placeholder="Enter Comp Level" min="1" max="5">
             <label for="level">Competition Level</label>
         </div>
+
         <div class="input-field">
-            <input style="color: white;" type="text" name="max_score" placeholder="Enter Max Value" class="materialize-textarea" required>
+            <input type="text" name="max_score" placeholder="Enter Max Value" class="materialize-textarea" required>
             <label for="max_score">Competition Max Value</label>
           </div>
+
           <div class="input-field">
-            <input style="color: white;" type="text" name="type" placeholder="Enter Type" class="materialize-textarea" required>
+            <input type="text" name="type" placeholder="Enter Type" class="materialize-textarea" required>
             <label for="type">Competition Type |Team|Single|</label>
           </div>
 
-    </div>
-    <div class="card-actions">
+      </div>
+
+      <div class="card-actions">
         <div class="row">
           <div class="col s12">
-            <input style="background-color: #343A40; border-radius: 25px;" type="submit" class="btn right" value="Create Competition">
+            <input type="submit" class="btn right" value="Create Competition">
           </div>
         </div>
-    </div>
-  </form>
-</main>
-
+      </div>
+     
+    </form>
+  </div>
+</div>
 {% endblock %}
