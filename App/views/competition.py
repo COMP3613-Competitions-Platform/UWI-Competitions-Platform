@@ -103,11 +103,11 @@ def add_competition_results(comp_name):
         moderator = None
     
     data = request.form
-
+    
     if competition.type == "team":
         students = [data['student1'], data['student2'], data['student3']]
         response = add_team(moderator.username, comp_name, data['team_name'], students)
-
+    
     elif competition.type == "single":
         student = Student.query.filter_by(username=data['student_name']).first()
         score = int(data['score']) 
@@ -151,13 +151,26 @@ def get_competitions_postman():
     competitions = get_all_competitions_json()
     return (jsonify(competitions),200)
 
+
 @comp_views.route('/createcompetition_postman', methods=['POST'])
 def create_comp_postman():
     data = request.json
-    response = create_competition('robert', data['name'], data['date'], data['location'], data['level'], data['max_score'])
+    
+    response = create_competition(
+        mod_name='robert',  
+        comp_name=data['name'],  
+        date=data['date'],  
+        location=data['location'],  
+        level=data['level'],  
+        max_score=data['max_score'],  
+        type=data['type']  
+    )
+
+   
     if response:
-        return (jsonify({'message': "Competition created!"}), 201)
-    return (jsonify({'error': "Error creating competition"}),500)
+        return jsonify({'message': "Competition created!"}), 201
+    return jsonify({'error': "Error creating competition"}), 500
+
 
 @comp_views.route('/competitions_postman/<int:id>', methods=['GET'])
 def competition_details_postman(id):
@@ -179,15 +192,39 @@ def competition_details_postman(id):
 
 @comp_views.route('/add_results_postman/<string:comp_name>', methods=['POST'])
 def add_competition_results_postman(comp_name):
+    # Fetch competition by name
     competition = get_competition_by_name(comp_name)
-    
-    data = request.json
-    
-    students = [data['student1'], data['student2'], data['student3']]
-    response = add_team('robert', comp_name, data['team_name'], students)
+    if not competition:
+        return jsonify({'error': f"Competition '{comp_name}' not found!"}), 404
 
+    data = request.json
+
+    # Handle team competition
+    if competition.type == "team":
+        required_fields = ['student1', 'student2', 'student3', 'team_name', 'score']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': f"Missing one or more fields: {required_fields}"}), 400
+
+        # Add team results
+        team_name = data['team_name']
+        students = [data['student1'], data['student2'], data['student3']]
+        add_team('robert', comp_name, team_name, students)
+        response = add_results('robert', comp_name, team_name, int(data['score']))
+
+    # Handle single competition
+    elif competition.type == "single":
+        required_fields = ['student_name', 'score']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': f"Missing one or more fields: {required_fields}"}), 400
+
+        # Add single competition results
+        response = add_results('robert', comp_name, data['student_name'], int(data['score']))
+
+    # Unsupported competition type
+    else:
+        return jsonify({'error': "Unsupported competition type!"}), 400
+
+    # Return appropriate response
     if response:
-        response = add_results('robert', comp_name, data['team_name'], int(data['score']))
-    if response:
-        return (jsonify({'message': "Results added successfully!"}),201)
-    return (jsonify({'error': "Error adding results!"}),500)
+        return jsonify({'message': "Results added successfully!"}), 201
+    return jsonify({'error': "Error adding results!"}), 500
