@@ -77,21 +77,25 @@ def initialize():
 def run_tests(test_name):
     """Run a specific test file. Provide the test file name (e.g., 'competition')."""
     test_file = f"App/tests/test_{test_name}.py"
-    
-    # Print the full path for debugging
     full_path = os.path.abspath(test_file)
     print(f"Looking for test file at: {full_path}")
     
-    # Check if the file exists
     if not os.path.exists(test_file):
         print(f"Error: Test file '{test_file}' not found!")
         sys.exit(1)
-
-    # Run the test file with pytest
     result = pytest.main([test_file, "-v"])
-    
-    # Exit with the pytest result code
     sys.exit(result)
+
+
+@app.cli.command("run_all_tests", help="Run all unit and integration tests.")
+@with_appcontext
+def run_all_tests():
+    """Run all tests."""
+    test_dir = os.path.join(os.getcwd(), 'App', 'tests')
+    result = pytest.main([test_dir, "-v"])
+    sys.exit(result)
+
+
 
 
     
