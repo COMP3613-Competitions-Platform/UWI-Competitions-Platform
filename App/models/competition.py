@@ -86,7 +86,7 @@ class Competition(db.Model):
             "moderators": [mod.username for mod in self.moderators],
             "teams": [team.name for team in self.teams],
             "students": [
-                {"username": student.username}  # Use self.students directly
+                {"username": student.username}  
                 for student in self.students
             ]
         }
