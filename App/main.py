@@ -29,6 +29,7 @@ def configure_app(app, config, overrides):
             app.config[key] = config[key]
 
 def create_app(config_overrides={}):
+
     app = Flask(__name__, static_url_path='/static')
     configure_app(app, config, config_overrides)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

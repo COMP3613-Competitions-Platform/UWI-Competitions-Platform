@@ -18,6 +18,7 @@ class Competition(db.Model):
     moderators = db.relationship('Moderator', secondary="competition_moderator", overlaps='competitions', lazy=True)
     teams = db.relationship('Team', secondary="competition_team", overlaps='competitions', lazy=True)
     students = db.relationship('Student', secondary='competition_student', overlaps="competition_student, student", lazy=True)
+    
 
     def __init__(self, name, date, location, level, max_score, type):
         self.name = name
