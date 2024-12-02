@@ -1,5 +1,5 @@
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://(https://github.com/COMP3613-Competitions-Platform/UWI-Competitions-Platform.git))
-<a href=https://uwi-competitions-platform-3.onrender.com">
+<a href="https://uwi-competitions-platform-3.onrender.com">
   <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a>
 
