@@ -125,16 +125,31 @@ $ flask db --help
 ## Unit & Integration
 Unit and Integration tests are created in the App/test. You can then create commands to run them. Look at the unit test command in wsgi.py for example
 
+
 ```python
-@test.command("user", help="Run User tests")
-@click.argument("type", default="all")
-def user_tests_command(type):
-    if type == "unit":
-        sys.exit(pytest.main(["-k", "UserUnitTests"]))
-    elif type == "int":
-        sys.exit(pytest.main(["-k", "UserIntegrationTests"]))
-    else:
-        sys.exit(pytest.main(["-k", "User"]))
+@app.cli.command("test")
+@click.argument('test_name', type=str, required=True)
+@with_appcontext
+def run_tests(test_name):
+    """Run a specific test file. Provide the test file name (e.g., 'competition')."""
+    test_file = f"App/tests/test_{test_name}.py"
+    full_path = os.path.abspath(test_file)
+    print(f"Looking for test file at: {full_path}")
+    
+    if not os.path.exists(test_file):
+        print(f"Error: Test file '{test_file}' not found!")
+        sys.exit(1)
+    result = pytest.main([test_file, "-v"])
+    sys.exit(result)
+
+
+@app.cli.command("run_all_tests", help="Run all unit and integration tests.")
+@with_appcontext
+def run_all_tests():
+    """Run all tests."""
+    test_dir = os.path.join(os.getcwd(), 'App', 'tests')
+    result = pytest.main([test_dir, "-v"])
+    sys.exit(result)
 ```
 
 You can then execute all user tests as follows
@@ -143,29 +158,30 @@ You can then execute all user tests as follows
 $ flask test user
 ```
 
-You can also supply "unit" or "int" at the end of the comand to execute only unit or integration tests.
+For integration tests:
+
+```bash
+$ flask test integration
+```
+
+Other tests include:
+```bash
+$ flask test integration
+$ flask test competition
+$ flask test moderator
+$ flask test student
+$ flask test notification
+$ flask test ranking_history
+```
 
 You can run all application tests with the following command
 
 ```bash
-$ pytest
+$ pytest 
+$ flask run_all_tests
 ```
 
-## Test Coverage
 
-You can generate a report on your test coverage via the following command
-
-```bash
-$ coverage report
-```
-
-You can also generate a detailed html report in a directory named htmlcov with the following comand
-
-```bash
-$ coverage html
-```
-
-# Troubleshooting
 
 ## Views 404ing
 
@@ -190,4 +206,4 @@ If you are running into errors in gitpod when updateding your github actions fil
 
 ## Database Issues
 
-If you are adding models you may need to migrate the database with the commands given in the previous database migration section. Alternateively you can delete you database file.
+If you are adding models you may need to migrate the database with the commands given in the previous database migration section. Alternateively you can delete your database file.
