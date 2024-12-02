@@ -1,0 +1,1407 @@
+{
+	"info": {
+		"_postman_id": "86790048-6ef2-4b48-9887-21b819e1d03d",
+		"name": "Curepe Quality Code",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32500465"
+	},
+	"item": [
+		{
+			"name": "Index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}",
+					"host": [
+						"{{host}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initialize",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the response Content-Type is JSON\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains a success message\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\");\r",
+							"    pm.expect(jsonData.message).to.eql(\"database_initialized\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/init_postman",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"init_postman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200 for a successful signup\r",
+							"pm.test(\"Status code is 200 for successful signup\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the response redirects to the leaderboard\r",
+							"pm.test(\"Redirects to leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<h1>Leaderboard</h1>\");\r",
+							"});\r",
+							"\r",
+							"// Test that the current user is included in the session\r",
+							"pm.test(\"Session contains user data\", function () {\r",
+							"    pm.response.text().includes(\"Welcome, JohnDoe\"); // Replace \"JohnDoe\" with the test username\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "JohnDoe",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200 for a successful signup\r",
+							"pm.test(\"Status code is 200 for successful signup\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the response redirects to the leaderboard\r",
+							"pm.test(\"Redirects to leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<h1>Leaderboard</h1>\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "james",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "jamespass",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200 (renders the 404 page)\r",
+							"pm.test(\"Status code is 200 for invalid student ID\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the student profile is not displayed\r",
+							"pm.test(\"Student profile details are present\", function () {\r",
+							"    pm.response.text().includes(\"<h1>Student Profile</h1>\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/student_profile/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"student_profile",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the response is HTML\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the user is redirected to the leaderboard\r",
+							"pm.test(\"Redirects to leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<h1>Leaderboard</h1>\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/logout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Moderator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200 for a successful signup\r",
+							"pm.test(\"Status code is 200 for successful signup\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the response redirects to the leaderboard\r",
+							"pm.test(\"Redirects to leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<h1>Leaderboard</h1>\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "robert",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "robertpass",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Moderator Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200 for valid moderator ID\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the response is HTML\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the moderator profile details are present\r",
+							"pm.test(\"Response contains moderator profile details\", function () {\r",
+							"    pm.response.text().includes(\"<h1>Moderator Profile</h1>\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/moderator_profile/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"moderator_profile",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get competitions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/competitions",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"competitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the response status is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Validate that the HTML contains expected content (e.g., competition name)\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<title>Competition Details</title>\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/add_results/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"add_results",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Competition Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains the competitions section\r",
+							"pm.test(\"Response contains competitions section\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"competitions\\\">\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "TestCompetitionTeam",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2001-10-09",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "CSL1",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "max_score",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "team",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/createcompetition",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"createcompetition"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Competition Single",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains the competitions section\r",
+							"pm.test(\"Response contains competitions section\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"competitions\\\">\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "TestCompetitionSingle",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2001-09-08",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "CSL2",
+							"type": "text"
+						},
+						{
+							"key": "level",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "max_score",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "single",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/createcompetition",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"createcompetition"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Result Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the response status is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Validate that the HTML contains expected content (e.g., competition name)\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<title>Competition Details</title>\");\r",
+							"});\r",
+							"\r",
+							"// Optionally check for dynamic content like the leaderboard or moderator name\r",
+							"pm.test(\"Response contains leaderboard section\", function () {\r",
+							"    pm.response.text().includes(\"Leaderboard\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "student1",
+							"value": "mark",
+							"type": "text"
+						},
+						{
+							"key": "student2",
+							"value": "isabella",
+							"type": "text"
+						},
+						{
+							"key": "student3",
+							"value": "michellle",
+							"type": "text"
+						},
+						{
+							"key": "team_name",
+							"value": "Bitset",
+							"type": "text"
+						},
+						{
+							"key": "score",
+							"value": "20",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/add_results/TestCompetitionTeam",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"add_results",
+						"TestCompetitionTeam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Result Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check that the response status is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<title>Competition Details</title>\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "student_name",
+							"value": "john",
+							"type": "text"
+						},
+						{
+							"key": "score",
+							"value": "20",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/add_results/TestCompetitionSingle",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"add_results",
+						"TestCompetitionSingle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains competition details\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"competition-details\\\">\");\r",
+							"});\r",
+							"\r",
+							"// Test that the leaderboard section is rendered\r",
+							"pm.test(\"Response contains leaderboard section\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"leaderboard\\\">\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/confirm_results/TestCompetitionSingle",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"confirm_results",
+						"TestCompetitionSingle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Competition Page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/createcompetition",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"createcompetition"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Competitions by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200 (for rendering 404 page)\r",
+							"pm.test(\"Status code is 200 for 404 page\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/competitions/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"competitions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Competitions By Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains competition details\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"competition-details\\\">\");\r",
+							"});\r",
+							"\r",
+							"// Test that the leaderboard is rendered\r",
+							"pm.test(\"Response contains leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"leaderboard\\\">\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/competition/{{add_results_team}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"competition",
+						"{{add_results_team}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains competition details\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"competition-details\\\">\");\r",
+							"});\r",
+							"\r",
+							"// Test that the leaderboard is rendered\r",
+							"pm.test(\"Response contains leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"leaderboard\\\">\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/confirm_results/{{add_results_team}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"confirm_results",
+						"{{add_results_team}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is text/html\r",
+							"pm.test(\"Content-Type is text/html\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/html; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains competition details\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"competition-details\\\">\");\r",
+							"});\r",
+							"\r",
+							"// Test that the leaderboard is rendered\r",
+							"pm.test(\"Response contains leaderboard\", function () {\r",
+							"    pm.response.text().includes(\"<section id=\\\"leaderboard\\\">\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/confirm_results/{{add_results_team}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"confirm_results",
+						"{{add_results_team}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "competition_postman",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is application/json\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Test that the response contains an array of competitions\r",
+							"pm.test(\"Response contains a list of competitions\", function () {\r",
+							"    const competitions = pm.response.json();\r",
+							"    pm.expect(competitions).to.be.an(\"array\");\r",
+							"    pm.expect(competitions.length).to.be.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"// Test that each competition has required keys\r",
+							"pm.test(\"Each competition has required fields\", function () {\r",
+							"    const competitions = pm.response.json();\r",
+							"    competitions.forEach(competition => {\r",
+							"        pm.expect(competition).to.have.property(\"id\");         \r",
+							"        pm.expect(competition).to.have.property(\"name\");\r",
+							"        pm.expect(competition).to.have.property(\"date\");\r",
+							"        pm.expect(competition).to.have.property(\"location\");\r",
+							"        pm.expect(competition).to.have.property(\"max_score\");\r",
+							"        pm.expect(competition).to.have.property(\"moderators\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": \"26-01-2024\",\r\n    \"id\": 1,\r\n    \"level\": 1.0,\r\n    \"location\": \"St. Augustine\",\r\n    \"max_score\": 25,\r\n    \"moderators\": [\r\n        \"robert\"\r\n    ],\r\n    \"name\": \"Code Wars\",\r\n    \"teams\": [\r\n        \"Runtime Terrors\",\r\n        \"Beyond Infinity\",\r\n        \"Scrum Lords\",\r\n        \"Little Bits\",\r\n        \"Binary Beasts\",\r\n        \"Hypertext Assassins\",\r\n        \"Bugs Bunnies\",\r\n        \"Hex Clan\"\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/competitions_postman",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"competitions_postman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_competition_postman_team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 201\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Test that the response is in JSON format\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains a success message\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\");\r",
+							"    pm.expect(jsonData.message).to.eql(\"Competition created!\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"CodeTeam\",\r\n    \"date\": \"26-01-2024\",\r\n    \"location\": \"St. Augustine\",\r\n    \"level\": 2,\r\n    \"max_score\": 25,\r\n    \"type\": \"team\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/createcompetition_postman",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"createcompetition_postman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_competition_postman_singlr",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 201\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Test that the response is in JSON format\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains a success message\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\");\r",
+							"    pm.expect(jsonData.message).to.eql(\"Competition created!\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"CodeSingle\",\r\n    \"date\": \"26-01-2024\",\r\n    \"location\": \"St. Augustine\",\r\n    \"level\": 2,\r\n    \"max_score\": 25,\r\n    \"type\": \"single\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/createcompetition_postman",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"createcompetition_postman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_competitions_postman",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 200 for a valid ID\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is application/json\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Test for valid response structure\r",
+							"pm.test(\"Response contains competition details\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"id\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"name\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"date\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"location\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"level\");\r",
+							"});\r",
+							"\r",
+							"// Test for competition name\r",
+							"pm.test(\"Competition name is valid\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].name).to.eql(\"Code Wars\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"date\": \"26-01-2024\",\r\n        \"id\": 1,\r\n        \"level\": 1.0,\r\n        \"location\": \"St. Augustine\",\r\n        \"max_score\": 25,\r\n        \"moderators\": [\r\n            \"robert\"\r\n        ],\r\n        \"name\": \"Code Wars\",\r\n        \"teams\": [\r\n            \"Runtime Terrors\",\r\n            \"Beyond Infinity\",\r\n            \"Scrum Lords\",\r\n            \"Little Bits\",\r\n            \"Binary Beasts\",\r\n            \"Hypertext Assassins\",\r\n            \"Bugs Bunnies\",\r\n            \"Hex Clan\"\r\n        ]\r\n }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/competitions_postman",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"competitions_postman"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Results Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 201 for success\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Test that the Content-Type is application/json\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains a success message\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\");\r",
+							"    pm.expect(jsonData.message).to.eql(\"Results added successfully!\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response does not contain an error\r",
+							"pm.test(\"Response does not contain error\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.not.have.property(\"error\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"student1\": \"mark\",\r\n    \"student2\": \"john\",\r\n    \"student3\": \"isabella\",\r\n    \"team_name\": \"CodeJam\",\r\n    \"score\": 85\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/add_results_postman/CodeTeam",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"add_results_postman",
+						"CodeTeam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Results  Single",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test that the status code is 201 for a successful result addition\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Test that the response Content-Type is application/json\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response contains a success message\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\");\r",
+							"    pm.expect(jsonData.message).to.eql(\"Results added successfully!\");\r",
+							"});\r",
+							"\r",
+							"// Test that the response does not contain an error message\r",
+							"pm.test(\"Response does not contain error message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.not.have.property(\"error\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"student_name\": \"mark\",\r\n       \"score\": 20\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/add_results_postman/CodeSingle",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"add_results_postman",
+						"CodeSingle"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://127.0.0.1:8080",
+			"type": "default"
+		},
+		{
+			"key": "add_results_team",
+			"value": "RunTime"
+		}
+	]
+}
