@@ -9,9 +9,8 @@
 A template for flask applications structured in the Model View Controller pattern [Demo](https://dcit-flaskmvc.herokuapp.com/). [Postman Collection](https://documenter.getpostman.com/view/583570/2s83zcTnEJ)
 
 # Credentials for testing
-           Moderator        Student
-Username   robert           brandon
-Password   robertpass       brandonpass
+Moderator | Username | robert  | Password | robertpass   
+Student   | Username | brandon | Password | brandonpass        
 
 # Dependencies
 * Python3/pip3
